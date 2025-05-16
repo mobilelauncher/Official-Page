@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TownCraftStudio Game Upload</title>
+<style>
+  /* Reset & basic styling */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #121212; /* Dark background */
+    color: #eee;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    padding: 1rem 2rem;
+    background: #0d47a1;
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    user-select: none;
+  }
+
+  main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .games-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .game-card {
+    background: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px #0d47a1cc;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .game-cover {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+  }
+
+  .game-content {
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .game-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+  }
+
+  .game-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: #42a5f5;
+  }
+
+  .game-description {
+    flex: 1;
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 1rem;
+  }
+
+  .game-download {
+    align-self: flex-start;
+    background: #0d47a1;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+  }
+  .game-download:hover {
+    background: #1976d2;
+  }
+
+  /* Admin Panel Button */
+  #adminBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #0d47a1;
+    border: none;
+    color: white;
+    padding: 0.7rem 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 0 10px #0d47a1aa;
+    user-select: none;
+  }
+  #adminBtn:hover {
+    background: #1976d2;
+  }
+
+  /* Admin Panel Modal */
+  #adminPanel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: #222;
+    border-radius: 10px;
+    padding: 2rem;
+    width: 360px;
+    box-shadow: 0 0 25px #0d47a1cc;
+    color: #eee;
+    transition: transform 0.3s ease;
+    z-index: 999;
+  }
+  #adminPanel.active {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  #adminPanel h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #42a5f5;
+  }
+
+  #adminPanel label {
+    display: block;
+    margin: 0.5rem 0 0.25rem;
+    font-weight: 600;
+  }
+
+  #adminPanel input[type="text"],
+  #adminPanel input[type="url"],
+  #adminPanel textarea,
+  #adminPanel input[type="password"] {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 1rem;
+    background: #333;
+    color: #eee;
+    resize: vertical;
+  }
+
+  #adminPanel textarea {
+    min-height: 70px;
+  }
+
+  #adminPanel button {
+    background: #0d47a1;
+    border: none;
+    color: white;
+    padding: 0.7rem 1.2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+    box-shadow: 0 0 10px #0d47a1aa;
+    transition: background 0.3s ease;
+  }
+  #adminPanel button:hover {
+    background: #1976d2;
+  }
+
+  /* Admin Password input container */
+  #passwordContainer {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+</head>
+<body>
+
+<header>TownCraftStudio Game Upload</header>
+
+<main>
+  <section class="games-list" id="gamesList">
+    <!-- Games will appear here -->
+  </section>
+</main>
+
+<button id="adminBtn">Admin Panel</button>
+
+<!-- Admin Panel Modal -->
+<div id="adminPanel" aria-hidden="true">
+  <h2>Admin Panel</h2>
+  <div id="passwordContainer">
+    <label for="adminPassword">Enter Admin Code:</label>
+    <input type="password" id="adminPassword" placeholder="Admin Code" />
+    <button id="passwordSubmitBtn">Enter</button>
+  </div>
+  <form id="uploadForm" style="display:none;">
+    <label for="gameName">Game Name</label>
+    <input type="text" id="gameName" required />
+
+    <label for="gameDescription">Game Description</label>
+    <textarea id="gameDescription" required></textarea>
+
+    <label for="gameIcon">Game Icon URL</label>
+    <input type="url" id="gameIcon" required />
+
+    <label for="gameCover">Game Cover Image URL</label>
+    <input type="url" id="gameCover" required />
+
+    <label for="gameDownload">Game Download Link</label>
+    <input type="url" id="gameDownload" required />
+
+    <button type="submit">Upload Game</button>
+  </form>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js";
+
+  // Your Firebase config here:
+  const firebaseConfig = {
+    apiKey: "AIzaSyD63RyYvPO0z2h6RgeANj-8yYcJPzO979Q",
+    authDomain: "game-store-1c5bc.firebaseapp.com",
+    projectId: "game-store-1c5bc",
+    storageBucket: "game-store-1c5bc.firebasestorage.app",
+    messagingSenderId: "313867209434",
+    appId: "1:313867209434:web:0d5c8241bf5b22b48933e3"
+  };
+
+  // Initialize Firebase and Firestore
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const adminBtn = document.getElementById('adminBtn');
+  const adminPanel = document.getElementById('adminPanel');
+  const passwordContainer = document.getElementById('passwordContainer');
+  const adminPasswordInput = document.getElementById('adminPassword');
+  const passwordSubmitBtn = document.getElementById('passwordSubmitBtn');
+  const uploadForm = document.getElementById('uploadForm');
+  const gamesList = document.getElementById('gamesList');
+
+  const ADMIN_CODE = "mirhazikr";
+
+  // Show admin panel on button click
+  adminBtn.addEventListener('click', () => {
+    adminPanel.classList.add('active');
+    adminPasswordInput.value = '';
+    passwordContainer.style.display = 'flex';
+    uploadForm.style.display = 'none';
+    adminPasswordInput.focus();
+  });
+
+  // Admin code check
+  passwordSubmitBtn.addEventListener('click', () => {
+    if (adminPasswordInput.value === ADMIN_CODE) {
+      passwordContainer.style.display = 'none';
+      uploadForm.style.display = 'block';
+    } else {
+      alert('Incorrect admin code!');
+      adminPasswordInput.value = '';
+      adminPasswordInput.focus();
+    }
+  });
+
+  // Upload game form submit handler
+  uploadForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const newGame = {
+      name: document.getElementById('gameName').value.trim(),
+      description: document.getElementById('gameDescription').value.trim(),
+      icon: document.getElementById('gameIcon').value.trim(),
+      cover: document.getElementById('gameCover').value.trim(),
+      downloadLink: document.getElementById('gameDownload').value.trim(),
+      createdAt: new Date().toISOString()
+    };
+
+    try {
+      await addDoc(collection(db, "games"), newGame);
+      alert('Game uploaded successfully!');
+      uploadForm.reset();
+      loadGames();
+    } catch (error) {
+      alert('Error uploading game: ' + error.message);
+    }
+  });
+
+  // Function to load games from Firestore and display
+  async function loadGames() {
+    gamesList.innerHTML = '';
+
+    try {
+      const querySnapshot = await getDocs(collection(db, "games"));
+      querySnapshot.forEach((doc) => {
+        const game = doc.data();
+        const gameCard = document.createElement('article');
+        gameCard.classList.add('game-card');
+
+        gameCard.innerHTML = `
+          <img src="${game.cover}" alt="${game.name} Cover" class="game-cover" />
+          <div class="game-content">
+            <img src="${game.icon}" alt="${game.name} Icon" class="game-icon" />
+            <h3 class="game-name">${game.name}</h3>
+            <p class="game-description">${game.description}</p>
+            <a href="${game.downloadLink}" target="_blank" rel="noopener" class="game-download">Download</a>
+          </div>
+        `;
+
+        gamesList.appendChild(gameCard);
+      });
+    } catch (error) {
+      gamesList.innerHTML = `<p style="color:#ff4444;">Failed to load games: ${error.message}</p>`;
+    }
+  }
+
+  // Load games initially
+  loadGames();
+
+  // Close admin panel on outside click or ESC key (optional)
+  window.addEventListener('click', e => {
+    if (e.target === adminPanel) {
+      adminPanel.classList.remove('active');
+    }
+  });
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      adminPanel.classList.remove('active');
+    }
+  });
+
+</script>
+
+</body>
+</html>
