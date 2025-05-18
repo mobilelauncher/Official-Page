@@ -2,121 +2,183 @@
 <html lang="en"> 
  <head> 
   <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=1024, user-scalable=no"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
   <title>MySmithingTable</title> 
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #000; /* Black background */
-      color: #e0e0e3;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: rgba(255, 255, 255, 0.9);
+      min-height: 100vh;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
     }
 
     header {
-      padding: 1rem 2rem;
-      background: #000;
-      font-size: 1.6rem;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      font-size: 1.8rem;
       font-weight: 700;
-      color: #007aff;
+      color: white;
       text-align: center;
-      border-bottom: 2px solid #222;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
     }
 
     main {
-      padding: 2rem;
+      flex: 1;
       max-width: 1200px;
-      margin: auto;
+      margin: 0 auto;
+      width: 100%;
     }
 
     .games-list {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 2rem;
     }
 
     .game-card {
-      background: #111;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border-radius: 20px;
-      box-shadow: 6px 6px 16px #000, -6px -6px 16px #222;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+      position: relative;
     }
 
     .game-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 20px #007aff;
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     }
 
     .game-cover {
       width: 100%;
-      height: 140px;
+      height: 180px;
       object-fit: cover;
     }
 
     .game-content {
-      padding: 1rem;
+      padding: 1.5rem;
       flex: 1;
       display: flex;
       flex-direction: column;
     }
 
     .game-icon {
-      width: 48px;
-      height: 48px;
+      width: 50px;
+      height: 50px;
       border-radius: 12px;
       object-fit: contain;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      padding: 5px;
     }
 
     .game-name {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 600;
-      margin-bottom: 0.3rem;
-      color: #fff;
+      margin-bottom: 0.5rem;
+      color: white;
     }
 
     .game-description {
       flex: 1;
-      font-size: 0.9rem;
-      color: #ccc;
-      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
     }
 
     .game-download {
       align-self: flex-start;
-      background: #000;
-      color: #00b7ff;
-      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 0.7rem 1.5rem;
       text-decoration: none;
       border-radius: 12px;
       font-weight: 600;
-      border: 1px solid #00b7ff;
-      transition: background 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .game-download:hover {
-      background: #00b7ff;
-      color: #000;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .download-count {
+      font-size: 0.8rem;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 0.2rem 0.5rem;
+      border-radius: 10px;
     }
 
     #adminBtn {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: #000;
-      color: #00b7ff;
-      border: 1px solid #00b7ff;
-      padding: 0.7rem 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 0.8rem 1.5rem;
       border-radius: 20px;
       font-weight: 600;
       cursor: pointer;
       z-index: 1000;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+
+    #adminBtn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    #editorBtn {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: rgba(255, 100, 100, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 100, 100, 0.3);
+      padding: 0.8rem 1.5rem;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+
+    #editorBtn:hover {
+      background: rgba(255, 100, 100, 0.3);
+      transform: translateY(-2px);
     }
 
     #adminPanel {
@@ -124,13 +186,17 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0);
-      background: #111;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       padding: 2rem;
-      width: 360px;
+      width: 90%;
+      max-width: 400px;
       border-radius: 20px;
-      box-shadow: 12px 12px 24px #000, -12px -12px 24px #222;
       z-index: 1001;
       transition: transform 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
     }
 
     #adminPanel.active {
@@ -138,59 +204,239 @@
     }
 
     #adminPanel h2 {
-      color: #00b7ff;
+      color: white;
       text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    #adminPanel label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.9rem;
     }
 
     #adminPanel input,
     #adminPanel textarea {
       width: 100%;
-      padding: 0.7rem;
-      margin-bottom: 1rem;
+      padding: 0.8rem;
+      margin-bottom: 1.2rem;
       border-radius: 12px;
-      background-color: #000;
-      color: #fff;
-      border: 1px solid #333;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+
+    #adminPanel input:focus,
+    #adminPanel textarea:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.15);
     }
 
     #adminPanel button {
-      background-color: #00b7ff;
-      color: #000;
-      padding: 0.7rem;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 0.8rem;
       border: none;
       border-radius: 12px;
       font-weight: bold;
       width: 100%;
       cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    #adminPanel button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    #editorPanel {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 2rem;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 20px;
+      z-index: 1001;
+      transition: transform 0.3s ease;
+      border: 1px solid rgba(255, 100, 100, 0.3);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
+    }
+
+    #editorPanel.active {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #editorPanel h2 {
+      color: white;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    #editorPanel label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.9rem;
+    }
+
+    #editorPanel input {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1.2rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 100, 100, 0.3);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+
+    #editorPanel input:focus {
+      outline: none;
+      border-color: rgba(255, 100, 100, 0.5);
+      background: rgba(255, 100, 100, 0.15);
+    }
+
+    #editorPanel button {
+      background: rgba(255, 100, 100, 0.2);
+      color: white;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 100, 100, 0.3);
+    }
+
+    #editorPanel button:hover {
+      background: rgba(255, 100, 100, 0.3);
+      transform: translateY(-2px);
     }
 
     #popup {
       position: fixed;
-      top: 40%;
+      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #111;
-      color: #00b7ff;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
       padding: 1.5rem 2rem;
       border-radius: 16px;
-      font-size: 1.2rem;
-      box-shadow: 0 0 20px #00b7ff;
+      font-size: 1.1rem;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
       display: none;
       z-index: 9999;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+    }
+
+    /* Close buttons */
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Delete button in editor mode */
+    .delete-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 100, 100, 0.2);
+      border-radius: 50%;
+      cursor: pointer;
+      border: 1px solid rgba(255, 100, 100, 0.3);
+      color: white;
+      font-weight: bold;
+      display: none; /* Hidden by default */
+    }
+
+    .delete-btn:hover {
+      background: rgba(255, 100, 100, 0.3);
+    }
+
+    /* Editor mode active */
+    .editor-mode .delete-btn {
+      display: flex;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      
+      .games-list {
+        grid-template-columns: 1fr;
+      }
+      
+      header {
+        font-size: 1.5rem;
+        padding: 1rem;
+      }
+
+      #editorBtn {
+        bottom: 70px;
+      }
     }
   </style> 
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"> 
  </head> 
  <body> 
   <header>
-   MySmithingTable
+    MySmithingTable 
   </header> 
   <main> 
    <section class="games-list" id="gamesList"></section> 
   </main> 
   <div id="popup">
-   Creating Game Download Link in 5 seconds...
-  </div> <button id="adminBtn">Admin Panel</button> 
+    Creating Game Download Link in 5 seconds... 
+  </div> <button id="adminBtn">Admin Panel</button> <button id="editorBtn">Editor Mode</button> 
   <div id="adminPanel"> 
+   <div class="close-btn" id="closeAdminPanel">
+    ×
+   </div> 
    <h2>Admin Panel</h2> 
    <div id="passwordContainer"> <label for="adminPassword">Enter Admin Code:</label> 
     <input type="password" id="adminPassword" placeholder="Admin Code"> <button id="passwordSubmitBtn">Enter</button> 
@@ -202,9 +448,21 @@
     <input type="url" id="gameDownload" required> <button type="submit">Upload Game</button> 
    </form> 
   </div> 
+  <div id="editorPanel"> 
+   <div class="close-btn" id="closeEditorPanel">
+    ×
+   </div> 
+   <h2>Editor Mode</h2> 
+   <div id="editorPasswordContainer"> <label for="editorPassword">Enter Editor Password:</label> 
+    <input type="password" id="editorPassword" placeholder="Editor Password"> <button id="editorPasswordSubmitBtn">Enter</button> 
+   </div> 
+   <div id="deleteConfirmation" style="display:none"> 
+    <p>Are you sure you want to delete this game?</p> <button id="confirmDeleteBtn">Delete Game</button> <button id="cancelDeleteBtn" style="margin-top: 0.5rem;">Cancel</button> 
+   </div> 
+  </div> 
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyD63RyYvPO0z2h6RgeANj-8yYcJPzO979Q",
@@ -218,17 +476,35 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  // DOM Elements
   const adminBtn = document.getElementById('adminBtn');
+  const editorBtn = document.getElementById('editorBtn');
   const adminPanel = document.getElementById('adminPanel');
+  const editorPanel = document.getElementById('editorPanel');
+  const closeAdminPanel = document.getElementById('closeAdminPanel');
+  const closeEditorPanel = document.getElementById('closeEditorPanel');
   const passwordContainer = document.getElementById('passwordContainer');
+  const editorPasswordContainer = document.getElementById('editorPasswordContainer');
   const adminPasswordInput = document.getElementById('adminPassword');
+  const editorPasswordInput = document.getElementById('editorPassword');
   const passwordSubmitBtn = document.getElementById('passwordSubmitBtn');
+  const editorPasswordSubmitBtn = document.getElementById('editorPasswordSubmitBtn');
   const uploadForm = document.getElementById('uploadForm');
+  const deleteConfirmation = document.getElementById('deleteConfirmation');
+  const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+  const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
   const gamesList = document.getElementById('gamesList');
   const popup = document.getElementById('popup');
 
+  // Passwords
   const ADMIN_CODE = "mirhazikr";
+  const EDITOR_CODE = "deletemirhazikrapp";
 
+  // State
+  let currentGameToDelete = null;
+  let isEditorMode = false;
+
+  // Admin Panel Logic
   adminBtn.addEventListener('click', () => {
     adminPanel.classList.add('active');
     passwordContainer.style.display = 'block';
@@ -237,18 +513,80 @@
     adminPasswordInput.focus();
   });
 
+  closeAdminPanel.addEventListener('click', () => {
+    adminPanel.classList.remove('active');
+  });
+
   passwordSubmitBtn.addEventListener('click', () => {
     if (adminPasswordInput.value === ADMIN_CODE) {
       passwordContainer.style.display = 'none';
       uploadForm.style.display = 'block';
       document.getElementById('gameName').focus();
     } else {
-      alert('Incorrect admin code!');
+      showPopup('Incorrect admin code!');
       adminPasswordInput.value = '';
       adminPasswordInput.focus();
     }
   });
 
+  // Editor Mode Logic
+  editorBtn.addEventListener('click', () => {
+    editorPanel.classList.add('active');
+    editorPasswordContainer.style.display = 'block';
+    deleteConfirmation.style.display = 'none';
+    editorPasswordInput.value = '';
+    editorPasswordInput.focus();
+  });
+
+  closeEditorPanel.addEventListener('click', () => {
+    editorPanel.classList.remove('active');
+    exitEditorMode();
+  });
+
+  editorPasswordSubmitBtn.addEventListener('click', () => {
+    if (editorPasswordInput.value === EDITOR_CODE) {
+      enterEditorMode();
+    } else {
+      showPopup('Incorrect editor password!');
+      editorPasswordInput.value = '';
+      editorPasswordInput.focus();
+    }
+  });
+
+  function enterEditorMode() {
+    isEditorMode = true;
+    document.body.classList.add('editor-mode');
+    editorPanel.classList.remove('active');
+    showPopup('Editor mode activated. Click the X buttons to delete games.');
+  }
+
+  function exitEditorMode() {
+    isEditorMode = false;
+    document.body.classList.remove('editor-mode');
+    currentGameToDelete = null;
+  }
+
+  // Delete Confirmation Logic
+  confirmDeleteBtn.addEventListener('click', async () => {
+    if (currentGameToDelete) {
+      try {
+        await deleteDoc(doc(db, "games", currentGameToDelete.id));
+        showPopup('Game deleted successfully!');
+        loadGames();
+      } catch (e) {
+        showPopup('Failed to delete game: ' + e.message);
+      }
+    }
+    deleteConfirmation.style.display = 'none';
+    currentGameToDelete = null;
+  });
+
+  cancelDeleteBtn.addEventListener('click', () => {
+    deleteConfirmation.style.display = 'none';
+    currentGameToDelete = null;
+  });
+
+  // Game Upload Logic
   uploadForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const newGame = {
@@ -257,25 +595,27 @@
       icon: document.getElementById('gameIcon').value.trim(),
       cover: document.getElementById('gameCover').value.trim(),
       downloadLink: document.getElementById('gameDownload').value.trim(),
+      downloads: 0, // Initialize download count
       createdAt: new Date().toISOString()
     };
 
     try {
       await addDoc(collection(db, "games"), newGame);
-      alert("Game uploaded successfully!");
+      showPopup("Game uploaded successfully!");
       uploadForm.reset();
       loadGames();
     } catch (e) {
-      alert("Upload failed: " + e.message);
+      showPopup("Upload failed: " + e.message);
     }
   });
 
+  // Load and Display Games
   async function loadGames() {
     gamesList.innerHTML = "";
     try {
       const snapshot = await getDocs(collection(db, "games"));
       if (snapshot.empty) {
-        gamesList.innerHTML = `<p style="color:#ccc;">No games available yet.</p>`;
+        gamesList.innerHTML = `<p style="color:rgba(255,255,255,0.7); text-align:center; grid-column:1/-1; padding:2rem;">No games available yet.</p>`;
         return;
       }
       snapshot.forEach(doc => {
@@ -288,18 +628,42 @@
             <img src="${g.icon}" alt="${g.name} icon" class="game-icon" />
             <h3 class="game-name">${g.name}</h3>
             <p class="game-description">${g.description}</p>
-            <a href="#" data-link="${g.downloadLink}" class="game-download">Download</a>
+            <a href="#" data-id="${doc.id}" data-link="${g.downloadLink}" class="game-download">
+              Download
+              <span class="download-count">${g.downloads || 0} downloads</span>
+            </a>
           </div>
+          <div class="delete-btn" data-id="${doc.id}">×</div>
         `;
         gamesList.appendChild(card);
       });
 
       // Add download delay logic
       document.querySelectorAll(".game-download").forEach(btn => {
-        btn.addEventListener("click", (e) => {
+        btn.addEventListener("click", async (e) => {
           e.preventDefault();
+          if (isEditorMode) return;
+          
+          const gameId = btn.getAttribute("data-id");
           const url = btn.getAttribute("data-link");
+          
+          popup.textContent = "Creating Game Download Link in 5 seconds...";
           popup.style.display = "block";
+          
+          try {
+            // Increment download count in database
+            await updateDoc(doc(db, "games", gameId), {
+              downloads: increment(1)
+            });
+            
+            // Update the displayed count immediately
+            const countElement = btn.querySelector('.download-count');
+            const currentCount = parseInt(countElement.textContent) || 0;
+            countElement.textContent = `${currentCount + 1} downloads`;
+          } catch (error) {
+            console.error("Error updating download count:", error);
+          }
+          
           setTimeout(() => {
             popup.style.display = "none";
             window.open(url, "_blank");
@@ -307,11 +671,40 @@
         });
       });
 
+      // Add delete button handlers
+      document.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          if (!isEditorMode) return;
+          
+          e.stopPropagation();
+          currentGameToDelete = {
+            id: btn.getAttribute("data-id"),
+            name: btn.parentElement.querySelector(".game-name").textContent
+          };
+          
+          editorPanel.classList.add('active');
+          editorPasswordContainer.style.display = 'none';
+          deleteConfirmation.style.display = 'block';
+          deleteConfirmation.querySelector('p').textContent = 
+            `Are you sure you want to delete "${currentGameToDelete.name}"?`;
+        });
+      });
+
     } catch (e) {
-      gamesList.innerHTML = `<p style="color:red">Failed to load games. ${e.message}</p>`;
+      gamesList.innerHTML = `<p style="color:rgba(255,100,100,0.8); text-align:center; grid-column:1/-1; padding:2rem;">Failed to load games. ${e.message}</p>`;
     }
   }
 
+  // Helper function to show popup messages
+  function showPopup(message) {
+    popup.textContent = message;
+    popup.style.display = "block";
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 3000);
+  }
+
+  // Initialize
   loadGames();
 </script> 
  </body>
